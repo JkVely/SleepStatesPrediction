@@ -1,4 +1,5 @@
 .venv/
+.vscode/
 __pycache__/
 *.py[cod]
 *.pyo
@@ -11,6 +12,7 @@ ENV/
 # Files
 *.parquet
 *.csv
+*.drawio
 
 # Latex
 *.aux
