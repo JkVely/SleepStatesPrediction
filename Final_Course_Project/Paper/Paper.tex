@@ -14,7 +14,7 @@
 \restylefloat{figure}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+	T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
 \title{Sleep State Prediction Using Accelerometry Data: A Systematic and Computational Approach}
@@ -74,32 +74,66 @@ During the initial workshop phase, we conducted an extensive systems analysis to
 As illustrated in Figure \ref{fig:workshop1_analysis}, the initial systems analysis revealed the fundamental data flow architecture that would guide our subsequent design decisions. The diagram shows the identification of key input sources including EMMO acceleration data, angle-based measurements from body position, step counting, and timestamp event recording. The central processing components identified include a data preprocessor for signal conditioning, an event detection module for identifying sleep-wake transitions, and dedicated wake-up and sleep state classifiers. The analysis also revealed the critical importance of validation mechanisms and pattern recognition elements to ensure system reliability and accuracy.
 
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=\columnwidth]{system_analysis_workshop1.png}
-\caption{Initial systems analysis from Workshop 1 showing the identification of key components, data flows, and processing stages in the sleep monitoring ecosystem, including validation mechanisms and pattern recognition elements.}
-\label{fig:workshop1_analysis}
+	\centering
+	\includegraphics[width=\columnwidth]{system_analysis_workshop1.png}
+	\caption{Initial systems analysis from Workshop 1 showing the identification of key components, data flows, and processing stages in the sleep monitoring ecosystem, including validation mechanisms and pattern recognition elements.}
+	\label{fig:workshop1_analysis}
 \end{figure}
 
-The second workshop phase focused on architectural selection and system design, where we evaluated multiple computational architectures before selecting a modular approach as the most suitable solution for our problem domain. As demonstrated in Figure \ref{fig:architecture}, the modular architecture was chosen due to its inherent flexibility, scalability, and maintainability advantages over monolithic approaches, directly informed by the information flow analysis conducted in Workshop 1. The clear separation of concerns observed in the initial systems analysis naturally led to a modular design where each identified component could be developed, tested, and optimized independently while maintaining seamless integration capabilities. This architecture enables independent development and optimization of individual components while facilitating seamless integration and data flow between modules. The modular design also supports future enhancements and algorithm substitutions without requiring complete system redesign, making it particularly suitable for research and development environments where iterative improvements are essential.
+The second workshop phase focused on architectural selection and system design, where we evaluated multiple computational architectures before selecting a modular approach as the most suitable solution for our problem domain. As demonstrated in Figure \ref{fig:architecture}, the modular architecture was chosen due to its inherent flexibility, scalability, and maintainability advantages over monolithic approaches, directly informed by the information flow analysis conducted in Workshop 1. This architecture enables independent development and optimization of individual components while facilitating seamless integration and data flow between modules.
 
-Our proposed system architecture, as depicted in Figure \ref{fig:architecture}, comprises five interconnected modules that collectively address the sleep state prediction challenge through a systematic data transformation pipeline. The Data Acquisition module handles the collection and initial processing of accelerometric data from wearable devices, incorporating timestamp synchronization and basic quality assessment protocols to ensure data integrity from the sensor level. The Data Processing module performs comprehensive signal conditioning including calibration, normalization, filtering, and gap detection to transform raw sensor measurements into consistent, analysis-ready datasets. The Feature Extraction module implements sophisticated algorithms to extract meaningful temporal and frequency domain characteristics from the preprocessed signals, including activity counts, time patterns, and statistical measures that characterize movement behaviors during different sleep states. This module transforms the continuous accelerometric data into discrete feature vectors that capture the essential patterns distinguishing sleep from wake periods, incorporating both traditional actigraphic features and novel computational descriptors derived from the systems analysis.
+Our proposed system architecture comprises five interconnected modules that systematically address the sleep state prediction challenge through a data transformation pipeline. The Data Acquisition module manages the collection and initial processing of accelerometric data from wearable devices, ensuring timestamp synchronization and basic quality assessment. The Data Processing module performs signal conditioning, including calibration, normalization, filtering, and gap detection, to transform raw measurements into analysis-ready datasets. The Feature Extraction module implements algorithms to obtain relevant temporal and frequency descriptors from the preprocessed signals. The core of this analysis is the calculation of the activity count:
 
-The Classification module represents the core intelligence of the system, implementing multiple algorithmic approaches including traditional methods such as Cole-Kripke and Sadeh algorithms, alongside contemporary machine learning techniques. This module reduces input data complexity while maintaining essential discriminative information for accurate sleep state determination, employing ensemble methods to leverage the strengths of different classification approaches. Finally, the Sleep State Prediction module integrates classification results with temporal sequence analysis to generate robust sleep state predictions, incorporating validation mechanisms to ensure prediction quality and reliability while accounting for the temporal dependencies inherent in sleep-wake cycles.
+\begin{equation}
+	\scriptsize
+	AC_{epoch} = \sum_{j=1}^{N} ENMO_j \times 1000
+\end{equation}
+where $AC_{epoch}$ is the activity count for each epoch, $ENMO_j$ is the ENMO value at step $j$ within the epoch, $N$ is the number of steps per epoch, and the factor 1000 is a typical scaling to facilitate interpretation. This metric summarizes physical activity during the period and serves as the basis for sleep/wake classification.
 
-The implementation of this modular architecture was materialized through a comprehensive Python notebook environment that translates the theoretical framework into executable code. The notebook-based approach was selected to facilitate iterative development, enable transparent documentation of the analytical process, and provide an accessible platform for reproducible research. Each module of the architecture corresponds to dedicated sections within the notebook, with clear separation of data loading, preprocessing, feature engineering, model training, and evaluation phases. The Python implementation leverages established libraries including pandas for data manipulation, scikit-learn for machine learning algorithms, and NumPy for numerical computations, while incorporating custom functions that implement the specific actigraphic algorithms identified during the systems analysis phase.
+The Classification module is the core intelligence of the system, implementing both traditional methods such as Cole-Kripke and Sadeh, and contemporary machine learning techniques. Finally, the Sleep State Prediction module integrates classification results with temporal sequence analysis to generate robust predictions, incorporating validation mechanisms to ensure quality and reliability.
 
-The third workshop phase involved comprehensive behavioral simulation studies designed to understand how external factors influence sleep patterns and system performance. These simulations examined the impact of environmental variables such as ambient noise, lighting conditions, and temperature fluctuations on sleep onset, duration, and quality transitions. The simulation framework enabled systematic evaluation of algorithm robustness under various perturbation scenarios, providing insights into system limitations and optimization opportunities. These studies revealed that environmental sensitivity varies significantly across individuals and sleep stages, reinforcing the importance of adaptive algorithmic approaches that can accommodate these variations.
-
-The transformation from conceptual architecture to practical implementation required careful consideration of computational efficiency, data handling protocols, and algorithm parameterization. The Python notebook implementation incorporates modular functions that mirror the architectural components, enabling independent testing and validation of each processing stage. The notebook environment facilitates parameter tuning through interactive visualizations and provides comprehensive logging of intermediate results, supporting the iterative refinement process identified as crucial during the workshop phases. Additionally, the implementation includes extensive documentation and reproducible execution paths that enable other researchers to replicate and extend the analytical framework.
-
-The modular architecture facilitates independent validation and optimization of each component while ensuring seamless data flow and processing efficiency. Each module incorporates error handling and quality assessment mechanisms to maintain system reliability and provide transparency in the prediction process. The design enables real-time processing capabilities while supporting offline analysis for research applications, making it suitable for both clinical and consumer-oriented implementations. The Python notebook serves as both a proof-of-concept implementation and a comprehensive documentation of the methodological approach, bridging the gap between theoretical framework and practical application.
+This modular architecture is illustrated in Figure~\ref{fig:architecture}, which shows the five modules and their information flow. This organization enables independent development and validation of each component, facilitates the integration of new algorithms, and supports both real-time and offline analysis, adapting to clinical and research environments.
 
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=\columnwidth]{system_architecture.png}
-\caption{Modular architecture for sleep state prediction system showing the five interconnected modules: Data Acquisition, Data Processing, Feature Extraction, Classification, and Sleep State Prediction.}
-\label{fig:architecture}
+	\centering
+	\includegraphics[width=\columnwidth]{system_architecture.png}
+	\caption{Modular architecture for sleep state prediction system showing the five interconnected modules: Data Acquisition, Data Processing, Feature Extraction, Classification, and Sleep State Prediction.}
+	\label{fig:architecture}
 \end{figure}
+
+The algorithms implemented include:
+
+\textbf{Cole-Kripke:}
+\begin{equation}
+	\scriptsize
+	S_i = \frac{0.04\,AC_{i-2} + 0.20\,AC_{i-1} + 2.00\,AC_i + 0.20\,AC_{i+1} + 0.04\,AC_{i+2}}{6.48}
+\end{equation}
+Based on the score $S_i$, it is classified as sleep ($1$) if $S_i < 1.0$, or wake ($0$) otherwise.
+
+
+\textbf{Sadeh:}
+\begin{equation}
+	\scriptsize
+	PS_i = 7.601 - 0.065\,AC_i - 1.08\,NAT_i - 0.056\,SD_i - 0.703\,\log(AC_i + 1)
+\end{equation}
+It is classified as sleep ($1$) if $PS_i \geq 0$, or wake ($0$) otherwise.
+
+\textbf{OPAL:}
+\begin{equation}
+	\scriptsize
+	Z_i = -1.0 - 2.5\,\log(AC_i + 1) + 1.5\,(1 - \frac{SD_i - P_5}{P_{95} - P_5})
+\end{equation}
+It is classified as sleep ($1$) if $Z_i > 0$, or wake ($0$) otherwise.
+
+In all cases, the resulting binary series (0: awake, 1: asleep) is used for subsequent analysis and prediction, not the continuous score. This approach ensures that the final output is interpretable and suitable for downstream analysis, such as forecasting and validation.
+
+The implementation was carried out in a Python notebook environment, structured into dedicated modules for data loading, preprocessing, feature extraction, and evaluation. The workflow leverages pandas and polars for efficient data manipulation, NumPy for numerical operations, and matplotlib with seaborn for comprehensive visualization. Custom functions were developed to implement the actigraphic algorithms, ensuring transparency and reproducibility. This modular structure mirrors the conceptual architecture, facilitating clarity, reproducibility, and future extensibility.
+
+To realistically assess the robustness of the proposed system, the simulation phase explicitly modeled the influence of key environmental factors—including light intensity, ambient sound, psychological stress, and physical activity—on sleep-wake movement patterns. Environmental disturbances were represented as discrete stochastic events, dynamically modulating the probability of movement during sleep-wake transitions. This event-based framework reflects the complex interplay between environmental stimuli and physiological responses, providing a robust platform for evaluating algorithmic performance under diverse, real-world scenarios. The methodological decision to incorporate these factors is grounded in the recognition that sleep is highly sensitive to external perturbations, and that accurate prediction systems must account for the multifaceted nature of real-life sleep environments.
+
+In the final implementation phase, Amazon's Chronos forecasting model was integrated to enhance prediction capabilities beyond traditional actigraphic methods. Chronos, a pre-trained transformer-based foundation model for time series forecasting, enables the system to capture complex temporal patterns and long-range dependencies in sleep-wake cycles. The model processes preprocessed accelerometric features and generates probabilistic forecasts of sleep state transitions, providing uncertainty quantification alongside point predictions. This integration combines the interpretability of traditional actigraphic methods with the advanced pattern recognition capabilities of modern foundation models, significantly improving the system's predictive accuracy and adaptability. 
+
+For evaluation, the model is used to predict the sleep state for 60 consecutive epochs, corresponding to a 5-minute window (as the recommended maximum for the model is 64 steps). These predictions are then directly compared to the ground truth binary series obtained from the traditional algorithms, allowing for a precise assessment of forecasting accuracy.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
