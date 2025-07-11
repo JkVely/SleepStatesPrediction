@@ -92,7 +92,10 @@ where $AC_{epoch}$ is the activity count for each epoch, $ENMO_j$ is the ENMO va
 
 The Classification module is the core intelligence of the system, implementing both traditional methods such as Cole-Kripke and Sadeh, and contemporary machine learning techniques. Finally, the Sleep State Prediction module integrates classification results with temporal sequence analysis to generate robust predictions, incorporating validation mechanisms to ensure quality and reliability.
 
+
 This modular architecture is illustrated in Figure~\ref{fig:architecture}, which shows the five modules and their information flow. This organization enables independent development and validation of each component, facilitates the integration of new algorithms, and supports both real-time and offline analysis, adapting to clinical and research environments.
+
+
 
 \begin{figure}[htbp]
 	\centering
@@ -125,15 +128,27 @@ It is classified as sleep ($1$) if $PS_i \geq 0$, or wake ($0$) otherwise.
 \end{equation}
 It is classified as sleep ($1$) if $Z_i > 0$, or wake ($0$) otherwise.
 
-In all cases, the resulting binary series (0: awake, 1: asleep) is used for subsequent analysis and prediction, not the continuous score. This approach ensures that the final output is interpretable and suitable for downstream analysis, such as forecasting and validation.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{simulation.png}
+	\caption{Flywheel diagram outlining the interaction between environmental factors and the sleep state. The simulation models how stress, fatigue, physical activity, light, sound, and other contextual variables dynamically influence the probability of being asleep. This probability is then used to generate synthetic ENMO and Anglez data, providing a realistic approximation of actigraphic signals for algorithm evaluation.}
+	\label{fig:flywheel_simulation}
+\end{figure}
+
+The simulation phase is based on this flywheel model (Figure~\ref{fig:flywheel_simulation}), which sketches the dynamic interplay between environmental and physiological factors and the sleep state. Each factor modulates the probability of being asleep at a given epoch, capturing the multifactorial nature of real-world sleep. This probability is then mapped to synthetic actigraphic signals: ENMO (activity) and Anglez (posture), using empirically derived distributions and noise models. This approach enables the generation of realistic, labeled time series for robust algorithm development and benchmarking, bridging the gap between theoretical modeling and practical data-driven evaluation.
 
 The implementation was carried out in a Python notebook environment, structured into dedicated modules for data loading, preprocessing, feature extraction, and evaluation. The workflow leverages pandas and polars for efficient data manipulation, NumPy for numerical operations, and matplotlib with seaborn for comprehensive visualization. Custom functions were developed to implement the actigraphic algorithms, ensuring transparency and reproducibility. This modular structure mirrors the conceptual architecture, facilitating clarity, reproducibility, and future extensibility.
 
 To realistically assess the robustness of the proposed system, the simulation phase explicitly modeled the influence of key environmental factors—including light intensity, ambient sound, psychological stress, and physical activity—on sleep-wake movement patterns. Environmental disturbances were represented as discrete stochastic events, dynamically modulating the probability of movement during sleep-wake transitions. This event-based framework reflects the complex interplay between environmental stimuli and physiological responses, providing a robust platform for evaluating algorithmic performance under diverse, real-world scenarios. The methodological decision to incorporate these factors is grounded in the recognition that sleep is highly sensitive to external perturbations, and that accurate prediction systems must account for the multifaceted nature of real-life sleep environments.
 
-In the final implementation phase, Amazon's Chronos forecasting model \cite{ansari2024chronos} was integrated to enhance prediction capabilities beyond traditional actigraphic methods. Chronos, a pre-trained transformer-based foundation model for time series forecasting, enables the system to capture complex temporal patterns and long-range dependencies in sleep-wake cycles. The model processes preprocessed accelerometric features and generates probabilistic forecasts of sleep state transitions, providing uncertainty quantification alongside point predictions. This integration combines the interpretability of traditional actigraphic methods with the advanced pattern recognition capabilities of modern foundation models, significantly improving the system's predictive accuracy and adaptability. 
+In the final implementation phase, Amazon's Chronos forecasting model \cite{ansari2024chronos} was integrated to enhance prediction capabilities beyond traditional actigraphic methods. Chronos, a pre-trained transformer-based foundation model for time series forecasting, enables the system to capture complex temporal patterns and long-range dependencies in sleep-wake cycles. The model processes preprocessed accelerometric features and generates probabilistic forecasts of sleep state transitions, providing uncertainty quantification alongside point predictions. This integration combines the interpretability of traditional actigraphic methods with the advanced pattern recognition capabilities of modern foundation models, significantly improving the system's predictive accuracy and adaptability.
 
 For evaluation, the model is used to predict the sleep state for 60 consecutive epochs, corresponding to a 5-minute window (as the recommended maximum for the model is 64 steps). These predictions are then directly compared to the ground truth binary series obtained from the traditional algorithms, allowing for a precise assessment of forecasting accuracy.
+
+\section{Results}
+
+
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
