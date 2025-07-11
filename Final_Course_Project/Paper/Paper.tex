@@ -148,6 +148,81 @@ For evaluation, the model is used to predict the sleep state for 60 consecutive 
 
 \section{Results}
 
+Based on the art state documented about sleep state prediction using ENMO and Anglez data, we used the original 
+data given by The Kaggle Sleep State Prediction Competition in order to evaluate the performance of the algorithms
+and enhance the Large Language Model (LLM). 
+
+\subsection{Data estandarization}
+Owing to the noise naturally presented in the data, a normalization process was introduced to 
+ensure that all features contribute equally to the algorithms and convert all
+data in a range of 0 and 1 (Figure~\ref{fig:normalization of the Anglez and ENMO}):
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{data_normalizate.png}
+	\caption{Normalization of the Anglez and ENMO data preprocessing to sleep prediction algorithm and LLM model }
+	\label{fig:normalization of the Anglez and ENMO}
+\end{figure}
+
+\subsection{Algorithm Approach}
+
+Besides the normalization data, Sadeh, Cole Kripke and Opal algorithm requires a minimum of time threshold event
+to get a considerable accuracy for that reason the normalizate data is divided by 12 timestamp, equally an
+one minute based on every step is taking by a 5 seconds gap. The following graphics are made of every
+algorithm prediction taking one minute gap of predictions and dividing result in a binary way which 1 is Sleep state
+and 0 On-wake state:
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{sadeh_result.png}
+	\caption{Sadeh algorithm Activity-based sleep-wake identification: an empirical test of methodological issues}
+	\label{fig:Sadeh algorithm prediction sleep state}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{Cole_result.png}
+	\caption{Cole-Kripke Algorithm automatic sleep/wake identification from wrist activity}
+	\label{fig:Cole-Kripke algorithm prediction sleep state}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{Opal_result.png}
+	\caption{OPAL Algorithm for sleep/wake classification using activity and posture.
+	This version uses a logistic regression-inspired approach to combine features}
+	\label{fig:OPAL algorithm prediction sleep state}
+\end{figure}
+
+\subsection{LLM Approach}
+
+The data from every algorithm is used as an entry to LLM Chrono forecasting t5 Amazon model 
+in a format of chunks divided by 180 in order to get 15 minutes intervals, which 10 minutes
+are used to train the model and the next 5 minutes to predice it, the following graphics 
+shows the comparative between all 5 minutes predicted vs the real 5 minutes data from
+the differents algorithm:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{sadeh_llm.png}
+	\caption{LLM accurancy vs real Sadeh algorithm}
+	\label{fig:LLM accurancy vs real sadeh algorithm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{cole_llm.png}
+	\caption{LLM accurancy vs real Cole-Kripke algorithm}
+	\label{fig:LLM accurancy vs real Cole-Kripke algorithm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\columnwidth]{opal_llm.png}
+	\caption{LLM accurancy vs real OPAL algorithm}
+	\label{fig:LLM accurancy vs real OPAL algorithm}
+\end{figure}
+
 
 
 \bibliographystyle{IEEEtran}
