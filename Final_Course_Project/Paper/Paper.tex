@@ -223,7 +223,35 @@ the differents algorithm:
 	\label{fig:LLM accurancy vs real OPAL algorithm}
 \end{figure}
 
+\section{Conclusion}
+	The system is abstracted as a lineal and deterministic, where the modularity 
+	give each component depends on the correct operation of the previous stage integrating a feedback loop identifies
+	and resolves processing errors by reinitializing the analytical cycle, thus increasing reliability. Furthermore, 
+	the system is error-tolerant thanks to a built-in validation module that detects anomalies and reprocesses data
+	from the point of error detection to ensure the integrity of the results. To minimize the risk of processing
+	incorrect or irrelevant information, a data filtering mechanism is implemented, which restricts input data under
+	certain conditions to ensure only valid data is accepted.
 
+	The system employs a modular and structured architecture that ensures effective and scalable data processing. Initially, 
+	raw input is handled by the Data Processor, which applies transformation techniques such as normalization, noise filtering,
+	and data smoothing. This refined data is subsequently routed to the Feature Extractor and, when applicable, directed to a deep 
+	learning model via the Model Selector. The Event Detection Module is responsible for interpreting the model's predictions, 
+	specifically identifying sleep and wake events. These events undergo a validation phase, where the Validation Module enforces 
+	predefined constraints and filters out unreliable outcomes. Ultimately, the validated results are formatted and delivered through
+	the Export Module.
+	This modular configuration promotes system reusability and adaptability to evolving data and modeling demands.
+  It also enhances fault tolerance and robustness, as individual components can be independently tested, maintained,
+  or upgraded without jeopardizing the overall system integrity. By isolating responsibilities across modules,
+  the design supports resilience to randomness and sensitivity in data, facilitating consistent and reliable performance.
+
+	Despite these robust design features, the system exhibits significant sensibility to chaos such as sleep disturbances
+	caused by medication or other medical conditions, which can negatively impact diagnostic accuracy and requires and 
+	a constant adaptation of the system to user conditions.
+	
+	Furthermore, the system relies on complex prediction validation algorithms and a pre-trained LLM model, which reduces
+	the risk of false positives or false negatives due to the inherent bias of the accelerometer sensor. Finally, the
+	architecture is sensitive to environmental randomness and external disturbances—such as sudden changes in user behavior
+	or sensor failures—that can potentially negatively impact overall performance.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
