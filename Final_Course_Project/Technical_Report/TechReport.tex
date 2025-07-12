@@ -44,184 +44,200 @@
 \maketitle
 
 \begin{abstract}
-	El sueño es un fenómeno fisiológico multifactorial influenciado por procesos biológicos internos y estímulos ambientales externos \cite{Sadeh1994}; al ser un proceso de tan alta importancia, hace que estudiarlo y controlarlo sea esencial. Este reporte técnico recopila nuestro trabajo hacia la detección de estados de sueño mediante análisis de datos de acelerometría e integración de modelos probabilísticos que tienen en cuenta el ambiente con variables como el estrés, luz, ruido y fatiga\cite{AccelerometryReview}, entendiendo cómo influyen en la probabilidad de movimiento durante transiciones de sueño a vigilia, incorporando nuestras perspectivas de análisis sistémico e incorporación de fases de diseño modular. 
+	Sleep is a multifactorial physiological phenomenon.
+influenced by internal biological processes and external environmental stimuli such external\cite{Sadeh1994}; being a process of such high importance, it makes that studying and controlling it is essential. This technical report collects our work towards the detection of sleep states
+through the analysis of accelerometry data and the integration of
+probabilistic models that take the environment into account with
+variables such as stress, light, noise, and fatigue \cite{AccelerometryReview}, understanding how they influence the probability of movement during transitions from sleep to wakefulness, incorporating our analytical perspectives systemic and incorporation of modular design phases.
 
-El marco implementa un modelo estocástico dirigido por eventos, usando arquitectura MVC en Java con visualización en JavaFx; este es validado con datos reales de acelerometría \cite{Kaggle} y se incorpora con un modelo probabilístico que estima la probabilidad de movimiento junto con un modelo de predicción de estado de sueño basado en historia de actividad, variables ambientales y modulación circadiana. El sistema aplica los algoritmos Cole Kripke \cite{ColeKripke}, Sadeh\cite{Sadeh1994} y Opal \cite{Opal2020}, y métodos de machine learning, incluyendo el LLM Chronos time series model\cite{Chronos}, para mejorar la capacidad de predicción más allá de métodos actigráficos tradicionales.
+The framework implements an event-driven stochastic model events, using MVC architecture in Java with visualization in JavaFx; this is validated with real accelerometry data \cite{Kaggle}  and is incorporated with a probabilistic model that estimates the probability of movement along with a prediction model of sleep state based on activity history, variables environmental factors and circadian modulation. The system applies the algorithms Cole Kripke \cite{ColeKripke}, Sadeh\cite{Sadeh1994} and Opal \cite{Opal2020},and methods of machine learning, including the LLM Chronos time series model\cite{Chronos}, to improve the prediction capability beyond traditional actigraphic methods.
 \end{abstract}
 
 \section{Introduction}
-\subsection{Antecedentes y Motivación}
-El monitoreo del sueño ha evolucionado desde la polisomnografía (PSG) basada en laboratorio hasta soluciones de acelerometría portátil \cite{AccelerometryReview}, impulsado por la necesidad de monitoreo continuo no invasivo. Nuestro trabajo aborda vacíos críticos identificados en enfoques actuales\cite{Sadeh1994}:
+\subsection{Background and Motivation}
+Sleep monitoring has evolved from laboratory-based polysomnography (PSG) to portable accelerometry solutions \cite{AccelerometryReview}, driven by the need for continuous non-invasive monitoring. Our work addresses critical gaps identified in current approaches \cite{Sadeh1994}:
 \begin{enumerate}
-    \item Comprensión limitada de influencias ambientales en patrones de movimiento
-    \item Falta de integración entre factores ambientales y modelos de regulación del sueño
-    \item Necesidad de entornos de simulación controlados para estudiar interacciones sueño-ambiente
+    \item Limited understanding of environmental influences on movement patterns
+    \item Lack of integration between environmental factors and sleep regulation models
+    \item Need for controlled simulation environments to study sleep-environment interactions
 \end{enumerate}
-\section{Avances significativos por workshop}
 
-A continuación, se enumeran los logros clave de cada taller, demostrando cómo cada fase contribuyó evolutivamente al sistema final:
+\section{Significant Advances by Workshop}
+Below are the key achievements of each workshop, demonstrating how each phase contributed evolutionarily to the final system:
+
 \subsection{Workshop 1:}
 \begin{itemize}
-    \item Avance 1: Identificación de Componentes Críticos
+    \item Advance 1: Identification of Critical Components
     \begin{itemize}
-    \item Identificacion de componentes clave (procesador de datos, detección de eventos, validador) y sus interacciones en sistemas de monitoreo del sueño, dando a relucir sensibilidad a entradas caóticas y la importancia de bucles de validación robustos.
-
-    \item Se descompuso el sistema de monitoreo de sueño en módulos esenciales (procesador de datos, detector de eventos, validador), revelando dependencias críticas. Esto permitió estructurar el desarrollo posterior y priorizar áreas vulnerables (ej: sensibilidad al ruido en acelerómetros).
+    \item Identification of key components (data processor, event detection, validator) and their interactions in sleep monitoring systems, revealing sensitivity to chaotic inputs and the importance of robust validation loops.
+    
+    \item The sleep monitoring system was decomposed into essential modules (data processor, event detector, validator), revealing critical dependencies. This allowed structuring subsequent development and prioritizing vulnerable areas (e.g., sensitivity to accelerometer noise).
     \end{itemize}
-    \item Avance 2: Diagnóstico de Sensibilidad al Caos
+    
+    \item Advance 2: Chaos Sensitivity Diagnosis
     \begin{itemize}
-    \item Se identifica que pequeñas variaciones en datos de acelerometría (como errores de ±0.01g en ENMO) podían distorsionar clasificaciones de sueño. Esto motivó la inclusión de filtros adaptativos y umbrales dinámicos en el modelo final.
+    \item It was identified that small variations in accelerometry data (such as ±0.01g errors in ENMO) could distort sleep classifications. This motivated the inclusion of adaptive filters and dynamic thresholds in the final model.
     \end{itemize}
-    \item Avance 3: Propuesta de Bucles de Validación
+    
+    \item Advance 3: Validation Loop Proposal
     \begin{itemize}
-    \item La detección de falsos positivos o negativos en análisis preliminares llevó a implementar un módulo de validación cruzada en la simulación, mejorando la precisión en un 15\% frente a sistemas sin retroalimentación.
+    \item The detection of false positives/negatives in preliminary analyses led to implementing a cross-validation module in the simulation, improving accuracy by 15\% compared to systems without feedback.
     \end{itemize}
 \end{itemize}
+
 \subsection{Workshop 2:}
 \begin{itemize}
-\item Avance 4: Arquitectura Modular Escalable   
+    \item Advance 4: Scalable Modular Architecture
     \begin{itemize}
-    \item Se desarrolló una arquitectura modular abordando hallazgos del Workshop 1, incorporando modelado resistentes al ruido y manejo adaptativo de errores.
-    \item Se propuso una estructura basada en pipelines independientes (procesamiento, modelado, validación), facilitando la integración de nuevos algoritmos (ej: LSTM en fase final) sin reestructurar el sistema completo.
+    \item A modular architecture was developed addressing findings from Workshop 1, incorporating noise-resistant modeling and adaptive error handling.
+    
+    \item A structure based on independent pipelines (processing, modeling, validation) was proposed, facilitating integration of new algorithms (e.g., LSTM in final phase) without restructuring the entire system.
     \end{itemize}
-\item Avance 5: Estrategias para preprocesamiento de datos
+    
+    \item Advance 5: Data Preprocessing Strategies
     \begin{itemize}
-    \item El diseño incorpora una tecnica de normalizacion de datos especifica para cada dato de entrada: Anglez (Rango: -1,1) Enmo (Rango: 0,1)
+    \item The design incorporates specific data normalization techniques for each input: Anglez (Range: -1,1) Enmo (Range: 0,1)
     \end{itemize}
-\item Avance 6: Protocolos de error handling
+    
+    \item Advance 6: Error Handling Protocols
     \begin{itemize}
-    \item Se definieron mecanismos para recuperación ante fallos (reanálisis de datos corruptos), evitando loops infinitos detectados en el Taller 1. Esto aumentó la confiabilidad del sistema en entornos reales.
+    \item Mechanisms were defined for failure recovery (reanalysis of corrupt data), avoiding infinite loops detected in Workshop 1. This increased system reliability in real environments.
     \end{itemize}
 \end{itemize}
+
 \subsection{Workshop 3:}
 \begin{itemize}
-\item Avance 7: Modelado Estocástico de Eventos
+    \item Advance 7: Stochastic Event Modeling
     \begin{itemize}
-    \item La implementación de procesos de Poisson para eventos ambientales (luces, ruidos) permitió simular perturbaciones realistas, capturando no linealidades en transiciones sueño a vigilia que modelos deterministas no toman en cuenta.
+    \item Implementation of Poisson processes for environmental events (lights, noises) allowed simulating realistic perturbations, capturing nonlinearities in sleep-wake transitions that deterministic models ignore.
     \end{itemize}
-\item Avance 8: Calibración Fisiológica
+    
+    \item Advance 8: Physiological Calibration
     \begin{itemize}
-    \item Los parametros de ENMO ( \(\mu_{\text{sue\~no}} = 0.01\,g\) ) y Anglez (\(\sigma_{\theta,\text{despierto}} = 15^\circ\) ) se ajustaron usando datos empíricos de Kaggle, logrando un 89\% de alineación con patrones humanos reales.
+    \item ENMO parameters (\(\mu_{\text{sleep}} = 0.01\,g\)) and Anglez (\(\sigma_{\theta,\text{awake}} = 15^\circ\)) were adjusted using empirical data from Kaggle, achieving 89\% alignment with real human patterns.
     \end{itemize}
-\end{itemize}
-\begin{itemize}
-\item Avance 9: Integración de Hallazgos Previos
+    
+    \item Advance 9: Integration of Previous Findings
     \begin{itemize}
-    \item Unificamos los avances de los talleres 1 y 2 en un sistema coherente: Usó de la modularidad del Taller 2 para incorporar el validador del Taller 1.
-    Aplicamos estrategias anti-caos de ambos talleres en el modelo estocástico.
+    \item We unified advances from Workshops 1 and 2 into a coherent system: Used Workshop 2's modularity to incorporate Workshop 1's validator. Applied anti-chaos strategies from both workshops in the stochastic model.
     \end{itemize}
-\end{itemize}
-\begin{itemize}
-\item Avance 10: Validación con datos reales
+    
+    \item Advance 10: Validation with Real Data
     \begin{itemize}
-    \item Las simulaciones replicaron con menos de 5\% de error datos reales (ENMO en paso 39), demostrando que el marco teórico puede traducirse a aplicaciones prácticas.
+    \item Simulations replicated real data with less than 5\% error (ENMO at step 39), demonstrating that the theoretical framework can translate to practical applications.
     \end{itemize}
 \end{itemize}
 
 \section{Methodology}
-\subsection{Desarrollo marco integrado}
-Nuestra metodologia combina perspectivas de las fases.
+\subsection{Integrated Framework Development}
+Our methodology combines perspectives from all phases:
 \begin{itemize}
-    \item Taller 1: Descomposicion del sistema, analisis de sensibilidad al caos.
+    \item Workshop 1: System decomposition, chaos sensitivity analysis.
     \begin{itemize}
-        \item Integracion final: Arquitectura dirigida por eventos con validacion por retroalimentacion.
+        \item Final integration: Event-driven architecture with feedback validation.
     \end{itemize}
-    \item Taller 2: Diseño modular, estrategias de robustez.
+    \item Workshop 2: Modular design, robustness strategies.
     \begin{itemize}
-        \item Integracion final: Implementacion MVC con manejo de errores.
+        \item Final integration: MVC implementation with error handling.
     \end{itemize}
-    \item Paper: Comparación de algoritmos(Cole - Kripke, Sadeh, Opal)
+    \item Paper: Algorithm comparison (Cole-Kripke, Sadeh, Opal)
     \begin{itemize}
-        \item Integracion final: Enfoque hibrido en logica de simulación.
+        \item Final integration: Hybrid approach in simulation logic.
     \end{itemize}
 \end{itemize}
-\subsection{Modelo de simulación basado en eventos}
-El marco matemático central modela la dinámica del sistema de sueño como una interacción estocástica entre factores ambientales, variables fisiológicas, la estructura temporal del comportamiento humano. Se emplea un enfoque basado en eventos discretos, complementado con componentes continuos que permiten capturar la variabilidad natural del entorno y su impacto en la actividad motora.
+
+\subsection{Event-Based Simulation Model}
+The core mathematical framework models sleep system dynamics as a stochastic interaction between environmental factors, physiological variables, and the temporal structure of human behavior. We employ a discrete event-based approach complemented by continuous components that capture natural environmental variability and its impact on motor activity.
+
 \begin{enumerate}
-\item Factores ambientales (Procesos estocasticos):
+\item Environmental Factors (Stochastic Processes):
     \begin{itemize}
-    \item $fX_i(t+1) = X_i(t) + \epsilon_i(t) + \Delta X_{i,\text{event}}(t)$ 
-    Donde \(\epsilon_i(t)\) representa fluctuaciones aleatorias gaussianas y \(\Delta X_{i,\text{evento}}\) eventos discretos como encendido de luces, ruidos súbitos o cambios de postura. Estos eventos son simulados mediante procesos de Poisson, lo cual permite generar aleatoriedad con tasas variables en el tiempo.
+    \item $X_i(t+1) = X_i(t) + \epsilon_i(t) + \Delta X_{i,\text{event}}(t)$ 
+    Where \(\epsilon_i(t)\) represents Gaussian random fluctuations and \(\Delta X_{i,\text{event}}\) discrete events such as light activation, sudden noises, or posture changes. These events are simulated through Poisson processes, enabling time-variable randomness generation.
     \end{itemize}
-\item Probabilidad de movimiento (via regresion logistica ):
+    
+\item Movement Probability (via Logistic Regression):
     \begin{itemize}
-    \item \(P_{\text{movimiento}}(t) = \sigma\big( \beta_0 + \beta_L L(t) + \beta_S S(t) + \beta_\sigma \sigma_s(t) + \beta_{\text{sue\~no}} I_{\text{sue\~no}}(t) \big)\).
-    \item Este componente estima la probabilidad instantánea de movimiento como función logística de variables externas como luz (\(L\)), estrés (\(S\)), y fatiga o variabilidad (\(\sigma_s\)), junto con un factor correctivo si el sujeto ya se encuentra dormido. Los coeficientes \(\beta\) se calibran empíricamente para reflejar sensibilidad fisiológica observada en los datos reales de acelerometría.
+    \item \(P_{\text{movement}}(t) = \sigma\big( \beta_0 + \beta_L L(t) + \beta_S S(t) + \beta_\sigma \sigma_s(t) + \beta_{\text{sleep}} I_{\text{sleep}}(t) \big)\).
+    \item This component estimates instantaneous movement probability as a logistic function of external variables like light (\(L\)), stress (\(S\)), and fatigue/variability (\(\sigma_s\)), plus a corrective factor if the subject is already asleep. The \(\beta\) coefficients are empirically calibrated to reflect physiological sensitivity observed in real accelerometry data.
     \end{itemize}
-\item Probabilidad de estar dormido (Incorporando ritmos circadianos):
+    
+\item Sleep Probability (Incorporating Circadian Rhythms):
     \begin{itemize}
-    \item \(P_{\text{sue\~no}}(t) = \sigma\big( \alpha_0 + \alpha_A A(t) + \alpha_L L(t) + \alpha_S S(t) + \alpha_\sigma \sigma_s(t) \big) \cdot C_{\text{circadiano}}(t)\)
-    \item El estado de sueño se modela como una función probabilística dependiente de múltiples factores ambientales, modulada por un componente circadiano \(C_{\text{circadiano}}(t)\), que introduce oscilaciones de baja frecuencia asociadas a la hora del día. Este término permite ajustar la probabilidad basal de sueño según ventanas de mayor propensión al descanso (por ejemplo, noche), y suprime la probabilidad durante horas típicamente activas. La combinación de estos factores refleja la sensibilidad del sistema sueño-vigilia ante perturbaciones tanto internas como externas, en línea con lo observado en sistemas biológicos reales.
+    \item \(P_{\text{sleep}}(t) = \sigma\big( \alpha_0 + \alpha_A A(t) + \alpha_L L(t) + \alpha_S S(t) + \alpha_\sigma \sigma_s(t) \big) \cdot C_{\text{circadian}}(t)\)
+    \item Sleep state is modeled as a probability function dependent on multiple environmental factors, modulated by a circadian component \(C_{\text{circadian}}(t)\) that introduces low-frequency oscillations tied to time of day. This term adjusts baseline sleep probability according to rest-prone windows (e.g., nighttime) while suppressing probability during typically active hours. The combination reflects sleep-wake system sensitivity to both internal and external perturbations, consistent with observations in real biological systems.
     \end{itemize}
 \end{enumerate}
 
-\section{implementacion del sistema}
-\subsection{Arquitectura}
-Combinando insights de talleres con objetivos técnicos:
+\section{System Implementation}
+\subsection{Architecture}
+Combining workshop insights with technical objectives:
 \begin{enumerate}
-    \item Arquitectura MVC modular: 
+    \item Modular MVC Architecture: 
     \begin{itemize}
-        \item Modelo: Implementa modelos estocasticos ambientales y de movimiento.
-        \item Vista: Visualizacion JavaFx de simulaciones en tiempo real.
-        \item Controlador: Gestiona Flujo de eventos e interacciones de usuario.
+        \item Model: Implements stochastic environmental and movement models.
+        \item View: JavaFx real-time simulation visualization.
+        \item Controller: Manages event flow and user interactions.
     \end{itemize}
-    \item Caracteristicas de robustez: 
+    \item Robustness Features: 
     \begin{itemize}
-        \item Bucles de validacion de datos.
-        \item Procesamiento de señal resitente al ruido .
-        \item Manejo adaptativo de errores para entradas caoticas.
+        \item Data validation loops.
+        \item Noise-resistant signal processing.
+        \item Adaptive error handling for chaotic inputs.
     \end{itemize}
 \end{enumerate}
-\subsection{Algoritmos clave}
+
+\subsection{Key Algorithms}
 \begin{enumerate}
-    \item Deteccion de eventos: 
+    \item Event Detection: 
         \begin{itemize}
-        \item Proceso Poisson para eventos ambientales.
-        \item Determinacion de movimiento por umbral de probabilidad.
+        \item Poisson process for environmental events.
+        \item Movement determination via probability thresholding.
         \end{itemize}
-    \item Generacion de señal:
+    \item Signal Generation:
         \begin{itemize}
-        \item ENMO: \(\mu_{\text{despierto}}\) = 0.04g, \(\mu_{\text{sue\~no}}\) = 0,01g
-        \item ANGLEZ: \(\sigma_{\theta,\text{despierto}} = 15^\circ\) = 15°
+        \item ENMO: \(\mu_{\text{awake}}\) = 0.04g, \(\mu_{\text{sleep}}\) = 0.01g
+        \item ANGLEZ: \(\sigma_{\theta,\text{awake}} = 15^\circ\)
         \end{itemize}
 \end{enumerate}
 
-\section{Resultados y Validación: }
-\subsection{Resultados de Simulacion}
+\section{Results and Validation}
+\subsection{Simulation Results}
 \begin{enumerate}
-    \item Respuestas ambientales:
+    \item Environmental Responses:
         \begin{itemize}
-        \item Aumento de luz (5 a 200 Lux) elevó probabilidad de movimiento de 0.1 a 0.4.
-        \item Alto estrés amplificó sensibilidad a otros factores por 1.5x.
+        \item Light increase (5 to 200 Lux) raised movement probability from 0.1 to 0.4.
+        \item High stress amplified sensitivity to other factors by 1.5x.
         \end{itemize}
-    \item Alineacion con datos reales:
+    \item Real Data Alignment:
         \begin{itemize}
-        \item Paso 39: ENMO = 0.02g (real = 0.00192g).
-        \item Anglez = -63.
-        \end{itemize}
-\end{enumerate}
-\subsection{Perspectivas de talleres realizados}
-\begin{enumerate}
-    \item Mitigacion de caos:
-        \begin{itemize}
-        \item Implemento filtros de normalización.
-        \item Adicion de modulo de validación para restricciones de periodos de sueño.
-        \end{itemize}
-    \item Mejoras Sistemicas
-        \begin{itemize}
-        \item Redujo falsos positivos en 32\% sobre la linea base.
-        \item Logro mejoras de presicion en deteccion de periodos de sueño mas largo.
+        \item Step 39: ENMO = 0.02g (real = 0.00192g).
+        \item Anglez = -63°.
         \end{itemize}
 \end{enumerate}
 
-\section{Conclusions: }
-Este proyecto presenta el desarrollo modular del sistema para la predicción de estados de sueño utilizando datos de acelerometría y factores ambientales modelados de forma estocástica. A lo largo de tres talleres se consolidó una arquitectura robusta basada en MVC con validación continua, procesamiento resistente al ruido, y simulación de eventos ambientales mediante procesos de Poisson. La combinación de modelos clásicos (Sadeh, Cole-Kripke, OPAL) con técnicas modernas como el modelo LLM Chronos nos permitió explorar los límites de la predicción actigráfica en escenarios complejos y caóticos.
+\subsection{Workshop Perspectives}
+\begin{enumerate}
+    \item Chaos Mitigation:
+        \begin{itemize}
+        \item Implemented normalization filters.
+        \item Added validation module for sleep period constraints.
+        \end{itemize}
+    \item Systemic Improvements:
+        \begin{itemize}
+        \item Reduced false positives by 32\% versus baseline.
+        \item Achieved precision improvements in detecting longest sleep periods.
+        \end{itemize}
+\end{enumerate}
 
-La comparacion de algoritmos reveló diferencias claras en el comportamiento de estos: Cole-Kripke mostro el mejor balance entre precision y exactitud con un puntaje F1 de 0.185, mientras que el Opal a pesar de ser el menos preciso globalmente alcanzo el puntaje F1 mas alto siendo de 0.2853, destacandose en detección de transiciones entre sueño y vigilia. Resultados que son coherentes con las simulaciones del sistema, observamos que los valores simulados de ENMO y Anglez se aproximan fuertemente a datos reales.
+\section{Conclusions}
+This project presents the modular development of a system for predicting sleep states using accelerometry data and stochastically modeled environmental factors. Across three workshops, we consolidated a robust MVC-based architecture with continuous validation, noise-resistant processing, and simulation of environmental events through Poisson processes. The combination of classical models (Sadeh, Cole-Kripke, OPAL) with modern techniques like the Chronos LLM time series model allowed us to explore the limits of actigraphic prediction in complex, chaotic scenarios.
+
+Algorithm comparison revealed clear behavioral differences: Cole-Kripke showed the best balance between precision and accuracy with an F1-score of 0.185, while OPAL, despite being globally less accurate, achieved the highest F1-score of 0.2853, excelling in detecting sleep-wake transitions. Results consistent with system simulations show that simulated ENMO and Anglez values closely approximate real data.
 
 \begin{table}[H]
 \centering
-\caption{Comparación de algoritmos para predicción de sueño}
+\caption{Sleep prediction algorithm comparison}
 \begin{tabular}{|l|c|c|c|c|}
 \hline
 \textbf{Algorithm} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
@@ -233,7 +249,8 @@ Opal         & 0.5902 & 0.2105 & 0.4429 & 0.2853 \\
 \end{tabular}
 \label{tab:alg_comparison}
 \end{table}
-El uso del LLM modelo Chronos especializado en series temporales, permitió mejorar la coherencia y la detección de fragmentacion binaria del sueño, demostrando el potencial del uso de una LLM como apoyo, la ganancia en consistencia y capacidad de modelar patrones largos demuestran que su uso vale la pena.
+
+The use of Chronos LLM, specialized in time series, improved consistency and detection of binary sleep fragmentation, demonstrating the potential of using LLMs as support. The gains in consistency and ability to model long patterns demonstrate its value.
 
 \begin{thebibliography}{99}
 
