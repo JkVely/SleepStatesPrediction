@@ -182,26 +182,26 @@ The LLM enhancement analysis reveals significant improvements in temporal patter
 The comprehensive evaluation of traditional algorithms against ground truth sleep events reveals important insights about actigraphic sleep detection performance. Table \ref{tab:performance_metrics} summarizes the quantitative performance metrics for all evaluated approaches.
 
 \begin{table}[H]
-\centering
-\caption{Performance Metrics Comparison: Traditional Algorithms vs LLM-Enhanced Predictions}
-\label{tab:performance_metrics}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\textbf{Algorithm} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
-\hline
-\textbf{Traditional Algorithms} & & & & \\
-\hline
-Sadeh & 0.614 & 0.339 & 0.110 & 0.166 \\
-Cole-Kripke & 0.623 & 0.381 & 0.122 & 0.185 \\
-OPAL & 0.556 & 0.354 & 0.327 & 0.340 \\
-\hline
-\textbf{LLM-Enhanced} & & & & \\
-\hline
-Sadeh + LLM & 0.614 & 0.339 & 0.110 & 0.166 \\
-Cole-Kripke + LLM & 0.623 & 0.381 & 0.122 & 0.185 \\
-OPAL + LLM & 0.556 & 0.354 & 0.327 & 0.340 \\
-\hline
-\end{tabular}
+	\centering
+	\caption{Performance Metrics Comparison: Traditional Algorithms vs LLM-Enhanced Predictions}
+	\label{tab:performance_metrics}
+	\begin{tabular}{|l|c|c|c|c|}
+		\hline
+		\textbf{Algorithm}              & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+		\hline
+		\textbf{Traditional Algorithms} &                   &                    &                 &                   \\
+		\hline
+		Sadeh                           & 0.614             & 0.339              & 0.110           & 0.166             \\
+		Cole-Kripke                     & 0.623             & 0.381              & 0.122           & 0.185             \\
+		OPAL                            & 0.556             & 0.354              & 0.327           & 0.340             \\
+		\hline
+		\textbf{LLM-Enhanced}           &                   &                    &                 &                   \\
+		\hline
+		Sadeh + LLM                     & 0.614             & 0.339              & 0.110           & 0.166             \\
+		Cole-Kripke + LLM               & 0.623             & 0.381              & 0.122           & 0.185             \\
+		OPAL + LLM                      & 0.556             & 0.354              & 0.327           & 0.340             \\
+		\hline
+	\end{tabular}
 \end{table}
 
 The analysis reveals several critical findings regarding algorithm specialization and performance characteristics. Each algorithm demonstrates distinct behavioral characteristics suited to different sleep monitoring scenarios, with Cole-Kripke excelling in overall accuracy, making it suitable for general population studies. OPAL achieves the best F1-score, indicating superior performance in detecting actual sleep events, while Sadeh shows conservative behavior with high specificity. The comparison with annotated sleep events from the Kaggle dataset provides unprecedented insight into real-world performance, showing that traditional algorithms tend to underestimate sleep periods, particularly during sleep fragmentation and transition phases.
@@ -209,34 +209,34 @@ The analysis reveals several critical findings regarding algorithm specializatio
 The Chronos transformer integration demonstrates the potential of foundation models for time series forecasting in physiological signal analysis. While maintaining comparable accuracy metrics, the LLM approach provides enhanced temporal consistency and uncertainty quantification capabilities. The performance variations highlight the importance of algorithm selection based on specific clinical applications, where OPAL's higher sensitivity may be preferred for sleep disorder screening, while Cole-Kripke's balanced performance suits general sleep quality assessment. These findings contribute to the growing body of evidence supporting the integration of modern AI techniques with established physiological monitoring approaches, providing a foundation for next-generation sleep monitoring systems.
 
 \section{Conclusion}
-	The system is abstracted as a lineal and deterministic, where the modularity 
-	give each component depends on the correct operation of the previous stage integrating a feedback loop identifies
-	and resolves processing errors by reinitializing the analytical cycle, thus increasing reliability. Furthermore, 
-	the system is error-tolerant thanks to a built-in validation module that detects anomalies and reprocesses data
-	from the point of error detection to ensure the integrity of the results. To minimize the risk of processing
-	incorrect or irrelevant information, a data filtering mechanism is implemented, which restricts input data under
-	certain conditions to ensure only valid data is accepted.
+The system is abstracted as a lineal and deterministic, where the modularity
+give each component depends on the correct operation of the previous stage integrating a feedback loop identifies
+and resolves processing errors by reinitializing the analytical cycle, thus increasing reliability. Furthermore,
+the system is error-tolerant thanks to a built-in validation module that detects anomalies and reprocesses data
+from the point of error detection to ensure the integrity of the results. To minimize the risk of processing
+incorrect or irrelevant information, a data filtering mechanism is implemented, which restricts input data under
+certain conditions to ensure only valid data is accepted.
 
-	The system employs a modular and structured architecture that ensures effective and scalable data processing. Initially, 
-	raw input is handled by the Data Processor, which applies transformation techniques such as normalization, noise filtering,
-	and data smoothing. This refined data is subsequently routed to the Feature Extractor and, when applicable, directed to a deep 
-	learning model via the Model Selector. The Event Detection Module is responsible for interpreting the model's predictions, 
-	specifically identifying sleep and wake events. These events undergo a validation phase, where the Validation Module enforces 
-	predefined constraints and filters out unreliable outcomes. Ultimately, the validated results are formatted and delivered through
-	the Export Module.
-	This modular configuration promotes system reusability and adaptability to evolving data and modeling demands.
-  It also enhances fault tolerance and robustness, as individual components can be independently tested, maintained,
-  or upgraded without jeopardizing the overall system integrity. By isolating responsibilities across modules,
-  the design supports resilience to randomness and sensitivity in data, facilitating consistent and reliable performance.
+The system employs a modular and structured architecture that ensures effective and scalable data processing. Initially,
+raw input is handled by the Data Processor, which applies transformation techniques such as normalization, noise filtering,
+and data smoothing. This refined data is subsequently routed to the Feature Extractor and, when applicable, directed to a deep
+learning model via the Model Selector. The Event Detection Module is responsible for interpreting the model's predictions,
+specifically identifying sleep and wake events. These events undergo a validation phase, where the Validation Module enforces
+predefined constraints and filters out unreliable outcomes. Ultimately, the validated results are formatted and delivered through
+the Export Module.
+This modular configuration promotes system reusability and adaptability to evolving data and modeling demands.
+It also enhances fault tolerance and robustness, as individual components can be independently tested, maintained,
+or upgraded without jeopardizing the overall system integrity. By isolating responsibilities across modules,
+the design supports resilience to randomness and sensitivity in data, facilitating consistent and reliable performance.
 
-	Despite these robust design features, the system exhibits significant sensibility to chaos such as sleep disturbances
-	caused by medication or other medical conditions, which can negatively impact diagnostic accuracy and requires and 
-	a constant adaptation of the system to user conditions.
-	
-	Furthermore, the system relies on complex prediction validation algorithms and a pre-trained LLM model, which reduces
-	the risk of false positives or false negatives due to the inherent bias of the accelerometer sensor. Finally, the
-	architecture is sensitive to environmental randomness and external disturbances—such as sudden changes in user behavior
-	or sensor failures—that can potentially negatively impact overall performance.
+Despite these robust design features, the system exhibits significant sensibility to chaos such as sleep disturbances
+caused by medication or other medical conditions, which can negatively impact diagnostic accuracy and requires and
+a constant adaptation of the system to user conditions.
+
+Furthermore, the system relies on complex prediction validation algorithms and a pre-trained LLM model, which reduces
+the risk of false positives or false negatives due to the inherent bias of the accelerometer sensor. Finally, the
+architecture is sensitive to environmental randomness and external disturbances—such as sudden changes in user behavior
+or sensor failures—that can potentially negatively impact overall performance.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
