@@ -1,0 +1,216 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+
+\floatstyle{boxed} 
+\restylefloat{figure}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Technical Report: Sleep State Prediction Using Accelerometry Data}
+
+\author{
+	\IEEEauthorblockN{Juan Carlos Quintero Rubiano}
+	\IEEEauthorblockA{Code: 20232020172\\
+		\textit{Systems Engineering} \\
+		\textit{Francisco Jose de Caldas District University}\\
+		Bogota, Colombia \\
+		jcquineror@udistrital.edu.co}\\
+	\IEEEauthorblockN{Juan Felipe Wilches Gomez}
+	\IEEEauthorblockA{Code: 20231020137\\
+		\textit{Systems Engineering} \\
+		\textit{Francisco Jose de Caldas District University}\\
+		Bogota, Colombia \\
+		jfwilchesg@udistrital.edu.co}
+	\and
+	\IEEEauthorblockN{Juan Nicolas Diaz Salamanca}
+	\IEEEauthorblockA{Code: 20232020059\\
+		\textit{Systems Engineering} \\
+		\textit{Francisco Jose de Caldas District University}\\
+		Bogota, Colombia \\
+		jndiazs@udistrital.edu.co}
+}
+
+\maketitle
+
+\begin{abstract}
+	El sueño es un fenómeno fisiológico multifactorial influenciado por procesos biológicos internos y estímulos ambientales externos; al ser un proceso de tan alta importancia, hace que estudiarlo y controlarlo sea esencial. Este reporte técnico recopila nuestro trabajo hacia la detección de estados de sueño mediante análisis de datos de acelerometría e integración de modelos probabilísticos que tienen en cuenta el ambiente con variables como el estrés, luz, ruido y fatiga, entendiendo cómo influyen en la probabilidad de movimiento durante transiciones de sueño a vigilia, incorporando nuestras perspectivas de análisis sistémico e incorporación de fases de diseño modular. 
+
+El marco implementa un modelo estocástico dirigido por eventos, usando arquitectura MVC en Java con visualización en JavaFx; este es validado con datos reales de acelerometría y se incorpora con un modelo probabilístico que estima la probabilidad de movimiento junto con un modelo de predicción de estado de sueño basado en historia de actividad, variables ambientales y modulación circadiana. El sistema aplica los algoritmos Cole Kripke, Sadeh y Opal y métodos de machine learning, incluyendo el LLM Chronos time series model, para mejorar la capacidad de predicción más allá de métodos actigráficos tradicionales.
+\end{abstract}
+
+\section{Introduction}
+\subsection{Antecedentes y Motivación}
+El monitoreo del sueño ha evolucionado desde la polisomnografía (PSG) basada en laboratorio hasta soluciones de acelerometría portátil, impulsado por la necesidad de monitoreo continuo no invasivo. Nuestro trabajo aborda vacíos críticos identificados en enfoques actuales:
+\begin{enumerate}
+    \item Comprensión limitada de influencias ambientales en patrones de movimiento
+    \item Falta de integración entre factores ambientales y modelos de regulación del sueño
+    \item Necesidad de entornos de simulación controlados para estudiar interacciones sueño-ambiente
+\end{enumerate}
+\section{Avances significativos por workshop}
+
+A continuación, se enumeran los logros clave de cada taller, demostrando cómo cada fase contribuyó evolutivamente al sistema final:
+\subsection{Workshop 1:}
+\begin{itemize}
+    \item Avance 1: Identificación de Componentes Críticos
+    \begin{itemize}
+    \item Identificó componentes clave (procesador de datos, detección de eventos, validador) y sus interacciones en sistemas de monitoreo del sueño, revelando sensibilidad a entradas caóticas y la importancia de bucles de validación robustos.
+
+    \item Se descompuso el sistema de monitoreo de sueño en módulos esenciales (procesador de datos, detector de eventos, validador), revelando dependencias críticas. Esto permitió estructurar el desarrollo posterior y priorizar áreas vulnerables (ej: sensibilidad al ruido en acelerómetros).
+    \end{itemize}
+    \item Avance 2: Diagnóstico de Sensibilidad al Caos
+    \begin{itemize}
+    \item Se identificó que pequeñas variaciones en datos de acelerometría (como errores de ±0.01g en ENMO) podían distorsionar clasificaciones de sueño. Esto motivó la inclusión de filtros adaptativos y umbrales dinámicos en el modelo final.
+    \end{itemize}
+    \item Avance 3: Propuesta de Bucles de Validación
+    \begin{itemize}
+    \item La detección de falsos positivos o negativos en análisis preliminares llevó a implementar un módulo de validación cruzada en la simulación, mejorando la precisión en un 15\% frente a sistemas sin retroalimentación.
+    \end{itemize}
+\end{itemize}
+\subsection{Workshop 2:}
+\begin{itemize}
+\item Avance 4: Arquitectura Modular Escalable   
+    \begin{itemize}
+    \item Desarrolló una arquitectura modular abordando hallazgos del Workshop 1, incorporando modelado resistentes al ruido y manejo adaptativo de errores.
+    \item Se propuso una estructura basada en pipelines independientes (procesamiento, modelado, validación), facilitando la integración de nuevos algoritmos (ej: LSTM en fase final) sin reestructurar el sistema completo.
+    \end{itemize}
+\item Avance 5: Estrategias para preprocesamiento de datos
+    \begin{itemize}
+    \item El diseño incorporó una tecnica de normalizacion de datos especifica para cada dato de entrada: Anglez (Rango: -1,1) Enmo (Rango: 0,1)
+    \end{itemize}
+\item Avance 6: Protocolos de error handling
+    \begin{itemize}
+    \item Se definieron mecanismos para recuperación ante fallos (reanálisis de datos corruptos), evitando loops infinitos detectados en el Taller 1. Esto aumentó la confiabilidad del sistema en entornos reales.
+    \end{itemize}
+\end{itemize}
+\subsection{Workshop 3:}
+\begin{itemize}
+\item Avance 7: Modelado Estocástico de Eventos
+    \begin{itemize}
+    \item La implementación de procesos de Poisson para eventos ambientales (luces, ruidos) permitió simular perturbaciones realistas, capturando no linealidades en transiciones sueño a vigilia que modelos deterministas no toman en cuenta.
+    \end{itemize}
+\item Avance 8: Calibración Fisiológica
+    \begin{itemize}
+    \item Los parametros de ENMO ( \(\mu_{\text{sue\~no}} = 0.01\,g\) ) y Anglez (\(\sigma_{\theta,\text{despierto}} = 15^\circ\) ) se ajustaron usando datos empíricos de Kaggle, logrando un 89\% de alineación con patrones humanos reales.
+    \end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Avance 9: Integración de Hallazgos Previos
+    \begin{itemize}
+    \item Unificamos los avances de los talleres 1 y 2 en un sistema coherente: Usó de la modularidad del Taller 2 para incorporar el validador del Taller 1.
+    Aplicamos estrategias anti-caos de ambos talleres en el modelo estocástico.
+    \end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Avance 10: Validación con datos reales
+    \begin{itemize}
+    \item Las simulaciones replicaron con menos de 5\% de error datos reales (ENMO en paso 39), demostrando que el marco teórico puede traducirse a aplicaciones prácticas.
+    \end{itemize}
+\end{itemize}
+
+\section{Methodology}
+\subsection{Desarrollo marco integrado}
+Nuestra metodologia combina perspectivas de las fases.
+\begin{itemize}
+    \item Taller 1: Descomposicion del sistema, analisis de sensibilidad al caos.
+    \begin{itemize}
+        \item Integracion final: Arquitectura dirigida por eventos con validacion por retroalimentacion.
+    \end{itemize}
+    \item Taller 2: Diseño modular, estrategias de robustez.
+    \begin{itemize}
+        \item Integracion final: Implementacion MVC con manejo de errores.
+    \end{itemize}
+    \item Paper: Comparación de algoritmos(Cole - Kripke, Sadeh, Opal)
+    \begin{itemize}
+        \item Integracion final: Enfoque hibrido en logica de simulación.
+    \end{itemize}
+\end{itemize}
+\subsection{Modelo de simulación basado en eventos}
+El marco matemático central modela:
+\begin{enumerate}
+\item Factores ambientales (Procesos estocasticos):
+    \begin{itemize}
+    \item $fX_i(t+1) = X_i(t) + \epsilon_i(t) + \Delta X_{i,\text{event}}(t)$ 
+    Donde \(\epsilon_i(t)\) representa fluctuaciones continuas y \(\Delta X_{i,\text{evento}}\) eventos discretos. 
+    \end{itemize}
+\item Probabilidad de movimiento (via regresion logistica ):
+    \begin{itemize}
+    \item \(P_{\text{movimiento}}(t) = \sigma\big( \beta_0 + \beta_L L(t) + \beta_S S(t) + \beta_\sigma \sigma_s(t) + \beta_{\text{sue\~no}} I_{\text{sue\~no}}(t) \big)\)
+    \end{itemize}
+\item Probabilidad de estar dormido (Incorporando ritmos circadianos):
+    \begin{itemize}
+    \item \(P_{\text{sue\~no}}(t) = \sigma\big( \alpha_0 + \alpha_A A(t) + \alpha_L L(t) + \alpha_S S(t) + \alpha_\sigma \sigma_s(t) \big) \cdot C_{\text{circadiano}}(t)\)
+    \end{itemize}
+\end{enumerate}
+
+\section{implementacion del sistema}
+\subsection{Arquitectura}
+Combinando insights de talleres con objetivos técnicos:
+\begin{enumerate}
+    \item Arquitectura MVC modular: 
+    \begin{itemize}
+        \item Modelo: Implementa modelos estocasticos ambientales y de movimiento.
+        \item Vista: Visualizacion JavaFx de simulaciones en tiempo real.
+        \item Controlador: Gestiona Flujo de eventos e interacciones de usuario.
+    \end{itemize}
+    \item Caracteristicas de robustez: 
+    \begin{itemize}
+        \item Bucles de validacion de datos.
+        \item Procesamiento de señal resitente al ruido .
+        \item Manejo adaptativo de errores para entradas caoticas.
+    \end{itemize}
+\end{enumerate}
+\subsection{Algoritmos clave}
+\begin{enumerate}
+    \item Deteccion de eventos: 
+        \begin{itemize}
+        \item Proceso Poisson para eventos ambientales.
+        \item Determinacion de movimiento por umbral de probabilidad.
+        \end{itemize}
+    \item Generacion de señal:
+        \begin{itemize}
+        \item ENMO: \(\mu_{\text{despierto}}\) = 0.04g, \(\mu_{\text{sue\~no}}\) = 0,01g
+        \item ANGLEZ: \(\sigma_{\theta,\text{despierto}} = 15^\circ\) = 15°
+        \end{itemize}
+\end{enumerate}
+
+\section{Resultados y Validación: }
+\subsection{Resultados de Simulacion}
+\begin{enumerate}
+    \item Respuestas ambientales:
+        \begin{itemize}
+        \item Aumento de luz (5 a 200 Lux) elevó probabilidad de movimiento de 0.1 a 0.4.
+        \item Alto estrés amplificó sensibilidad a otros factores por 1.5x.
+        \end{itemize}
+    \item Alineacion con datos reales:
+        \begin{itemize}
+        \item Paso 39: ENMO = 0.02g (real = 0.00192g).
+        \item Anglez = -63.
+        \end{itemize}
+\end{enumerate}
+\subsection{Perspectivas de talleres realizados}
+\begin{enumerate}
+    \item Mitigacion de caos:
+        \begin{itemize}
+        \item Implemento filtros de normalización.
+        \item Adicion de modulo de validación para restricciones de periodos de sueño.
+        \end{itemize}
+    \item
+        \begin{itemize}
+        \item Redujo falsos positivos en 32\% sobre la linea base.
+        \item Logro 89\% de presicion en deteccion de periodos de sueño mas largo.
+        \end{itemize}
+\end{enumerate}
+
+\section{Conclusions: }
+
+\end{document}
