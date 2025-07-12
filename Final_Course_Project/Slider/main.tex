@@ -1,0 +1,167 @@
+\documentclass[10pt]{beamer} % For a presentation we need to use the document class "beamer"
+% Here we can also define the font size (10pt)
+
+% This template uses the Metropolis theme by Matthias Vogelgesang (https://www.overleaf.com/latex/templates/metropolis-beamer-theme/qzyvdhrntfmr) and is meant to present an easily accessible template for everyone who wants to set-up a quick-and-easy presentation
+
+\input{general.tex} % Loads required packages from the separate file 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add title information
+\title{Sleep State Prediction Using Accelerometry Data\space } % Adds the title of the presentation
+\subtitle{Francisco Jose de Caldas District University} % Comment if you do not need it
+\date{\footnotesize \today} % Adds the date (default: today
+\author[Authors]{Authors \\ Juan Carlos Quintero Rubiano \\ Code: 20232020172
+                \\ Juan Nicolas Diaz Salamanca \\ Code: 20232020059 
+                \\ Juan Felipe Wilches Gomez \\ Code: 20231020137} % Adds the author's name
+\institute{Francisco Jose de Caldas District University} % Adds the author's institute/university
+\titlegraphic{\hfill\includegraphics[height=2cm]{figures/logo.png}} % Adds a logo 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Begin the document
+\begin{document}
+
+\maketitle % Adds the title
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add an agenda
+\begin{frame}[plain]{Outline} % "Plain" omits the page number
+%    \tableofcontents[hideallsubsections] % Adds table of content and hides all subsections
+   \tableofcontents % Adds table of content 
+\end{frame}
+\section{Introduction}
+\begin{frame}{Introduction} % Add frame title
+ % We use the environment "columns" to generate a slide with an image and a text side-by-side. "Columns" is provided by beamer
+ % And this command defines the width of the text
+\normalsize \centering \textbf{How does it study sleep?}
+ \begin{itemize}
+     \item \footnotesize Sleep is a fundamental complex biological process composed of \textbf{several distinct states} which interruptions  or unbalanced on this process may come with important  \textbf{physical and mental health issues}, affecting millions worldwide and are linked to chronic diseases.
+     \item \footnotesize Traditionally sleep had been studied using Polysomnography (PSG) a technology that captures detailed physiological signals. However, \textbf{PSG requires specialized facilities,
+     trained technicians, and sophisticated instrumentation}.
+     \item Recent advances in wearable technology have enabled the use of accelerometers as a non-invasive, low-cost alternative for sleep state prediction. These sensors, embedded in consumer devices like smartwatches and fitness trackers, measure body movement to infer sleep and wake state:
+ \end{itemize}
+        
+\end{frame}
+
+\section{Sleep System Approach}
+
+\begin{frame}{Sleep system approach} % Add frame title
+ % This command defines the width of the image
+          \begin{figure}
+              \centering
+             \includegraphics[width=0.8\textwidth]{figures/simulation.png} % The scale reduced the size of the image
+             \caption{Sleep system diagram} % We add a caption again
+             \end{figure}
+% And this command defines the width of the text
+ 
+\end{frame}
+\begin{frame}{Sleep system approach} % Add frame title
+ % This command defines the width of the image
+          \begin{figure}
+              \centering
+             \includegraphics[width=0.8\textwidth]{figures/system.png} % The scale reduced the size of the image
+             \caption{Architecture diagram} % We add a caption again
+             \end{figure}
+% And this command defines the width of the text
+ 
+\end{frame}
+\begin{frame}{Sleep system approach: Data Extraction  } % Add frame title
+ % This command defines the width of the image
+ \begin{itemize}
+    \item \footnotesize ENMO: Euclidean Norm Minus One, a measure of physical activity.
+    \item \footnotesize Anglez: Angle of the wrist, which can indicate the position of the wrist.
+    \item \footnotesize Step: step identifier.
+    \item \footnotesize Timestamp: Measurement time.
+\footnotesize ENMO and Anglez are normalized
+\end{itemize}
+          \begin{figure}
+              \centering
+             \includegraphics[width=0.6\textwidth]{figures/data_normalizate.png} % The scale reduced the size of the image
+             \caption{Data normalized} % We add a caption again
+             \end{figure}
+% And this command defines the width of the text
+
+\end{frame}
+
+\begin{frame}{Sleep system approach: Data Transformation  } % Add frame title
+ % This command defines the width of the image
+\begin{itemize}
+    \item \footnotesize Sadeh algorithm Activity-based sleep-wake identification: an empirical test of methodological issues
+    \item \footnotesize Cole-Kripke Algorithm automatic sleep/wake identification from wrist activity
+    \item \footnotesize OPAL Algorithm for sleep/wake classification using activity and posture.
+	This version uses a logistic regression-inspired approach to combine features
+\end{itemize}
+    \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/sadeh_result.png}
+    \end{figure}
+    \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/Cole_result.png}
+    \end{figure}
+    \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/Opal_result.png}
+    \end{figure}
+% And this command defines the width of the text
+
+\end{frame}
+
+\begin{frame}{Sleep system approach: Data Consumers } % Add frame title
+ % This command defines the width of the image
+ \begin{itemize}
+    \item \footnotesize The data from every algorithm is divided by 180 in order to get 15 minutes intervals to, which 10 minutes are used to train the model and 5 minutes
+    to predice and comparate to analyze the model precision. 
+\end{itemize}
+          \begin{figure}
+            
+             \includegraphics[width=0.8\textwidth]{figures/sadehvsReal.png} % The scale reduced the size of the image
+             \end{figure}
+\end{frame}
+
+\begin{frame}{Quality metrics}
+        \begin{figure}
+      
+        \includegraphics[width=0.9\textwidth]{figures/colevsGReal.png} % The scale reduced the size of the image
+        \end{figure}
+        \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/opalvsGReal.png} % The scale reduced the size of the image
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Quality metrics}
+        \begin{figure}
+      
+        \includegraphics[width=0.9\textwidth]{figures/opalvsGReal.png} % The scale reduced the size of the image
+        \end{figure}
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}{Conclusions}
+\begin{itemize}
+  \item The system is linear and deterministic, with modular components depending on the correct functioning of previous stages and a feedback loop that reinitializes processing to resolve errors and enhance reliability.
+
+  \item  A built-in validation module ensures error tolerance by detecting anomalies and reprocessing data from the point of failure to maintain result integrity.
+
+  \item A data filtering mechanism restricts invalid or irrelevant input under certain conditions to ensure only valid data is processed.
+
+\end{itemize}
+\end{frame}
+\begin{frame}{Conclusions}
+\begin{itemize}
+      \item  The architecture follows a modular and structured pipeline: raw data is processed (normalization, filtering, smoothing), features are extracted, and relevant data is sent to a deep learning model for event detection.
+
+      \item  Detected events go through validation and are then formatted and exported; this modular flow supports scalability, reuse, and adaptability to changing data or models.
+
+     \item  Components can be tested and upgraded independently, improving system robustness, fault tolerance, and resilience to data variability and randomness.
+
+     \item  Limitations include sensitivity to chaotic inputs (e.g., sleep disturbances from medication), environmental randomness, and sensor failures, requiring continuous adaptation and relying on advanced validation and pre-trained LLMs to reduce false outcomes.
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document} % End the document here

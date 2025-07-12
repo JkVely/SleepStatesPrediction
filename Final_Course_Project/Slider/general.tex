@@ -1,0 +1,107 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This file contains all style information and loads additional packages that are necessary for the generation of the presentation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load the theme
+
+% Use the Metropolis theme
+\usetheme[progressbar=frametitle]{metropolis} % Adds a progress bar to the frametitle
+% The template for the Metropolis theme can be accessed here: https://de.overleaf.com/latex/templates/metropolis-beamer-theme/qzyvdhrntfmr
+
+% Change the width of the progress bar to make it more visible (Code taken from here: https://github.com/matze/mtheme/issues/237)
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{0.5pt} % Title page
+\setlength{\metropolis@progressonsectionpage@linewidth}{1.5pt} % Progress bar on section page
+\setlength{\metropolis@progressinheadfoot@linewidth}{1.5pt} % Progress bar in header
+\makeatother
+
+% Change the color of the progress bar to match it with the logo
+% First we need to define the colors
+\definecolor{darkblue}{RGB}{32,61,86}
+\definecolor{blue}{RGB}{62, 129, 171}
+% And then we set the color for the progressbar
+\setbeamercolor{progress bar}{fg=blue,
+  bg=alerted text.fg!70!black!20}
+% "fg" presents the already presented part and "bg" the part to come (we use the standard color for "bg")
+
+% We also need to adjust the color for the alert text
+\setbeamercolor{alerted text}{fg=blue}
+
+% And the alerted box
+\setbeamercolor{alerted box}{fg=blue}
+
+% Change frame title color
+\setbeamercolor{frametitle}{bg=darkblue}
+
+% Change title slide so that the line is a bit thicker (comment if you want the original title page)
+% The code was inspired by this code: https://tex.stackexchange.com/questions/512146/beamer-theme-customizing-title-page
+\setbeamertemplate{title page}{
+{%
+% Add the logo
+\begin{flushright}
+    \inserttitlegraphic
+    \end{flushright}
+    }
+% Add the title and the subtitle
+ {%
+    \usebeamercolor[fg]{title}
+    \usebeamerfont{title}
+        \inserttitle\\
+        \medskip
+        \textnormal{\large\insertsubtitle}
+    }
+    \par\smallskip
+% Define the line and the line width
+{%
+    \color{blue!50!blue}
+        \rule{\linewidth}{1.1pt}
+    }
+    \par\smallskip
+% Add the author
+    {%
+    \usebeamercolor[fg]{author}
+    \usebeamerfont{author}
+        \insertauthor
+    }\par\smallskip
+% Add the date
+    {%
+    \usebeamercolor[fg]{date}
+    \usebeamerfont{date}
+        \insertdate
+    }\par
+% Add the institute
+    {%
+    \usebeamercolor[fg]{institute}
+    \usebeamerfont{institute}
+        \insertinstitute
+    }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load relevant packages
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{hyperref}
+\pdfstringdefDisableCommands{%
+  \let\enspace\empty  % this causes the warning for \kern
+  \let\noindent\empty % this causes the warning for \indent
+}
+
+% Package for citation
+\usepackage[sort]{natbib} % We use natbib in this example
+
+% For citing with natbib, you may want to use this reference sheet: 
+% http://merkel.texture.rocks/Latex/natbib.php
+
+\bibliographystyle{apsr} % We use the APSR style
