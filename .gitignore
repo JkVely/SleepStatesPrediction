@@ -24,4 +24,7 @@ ENV/
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*.toc
+*.nav
+*.snm
 **/logs/*_log.txt
