@@ -8,6 +8,7 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage{url}
 
 \floatstyle{boxed} 
 \restylefloat{figure}
@@ -43,14 +44,14 @@
 \maketitle
 
 \begin{abstract}
-	El sueño es un fenómeno fisiológico multifactorial influenciado por procesos biológicos internos y estímulos ambientales externos; al ser un proceso de tan alta importancia, hace que estudiarlo y controlarlo sea esencial. Este reporte técnico recopila nuestro trabajo hacia la detección de estados de sueño mediante análisis de datos de acelerometría e integración de modelos probabilísticos que tienen en cuenta el ambiente con variables como el estrés, luz, ruido y fatiga, entendiendo cómo influyen en la probabilidad de movimiento durante transiciones de sueño a vigilia, incorporando nuestras perspectivas de análisis sistémico e incorporación de fases de diseño modular. 
+	El sueño es un fenómeno fisiológico multifactorial influenciado por procesos biológicos internos y estímulos ambientales externos \cite{Sadeh1994}; al ser un proceso de tan alta importancia, hace que estudiarlo y controlarlo sea esencial. Este reporte técnico recopila nuestro trabajo hacia la detección de estados de sueño mediante análisis de datos de acelerometría e integración de modelos probabilísticos que tienen en cuenta el ambiente con variables como el estrés, luz, ruido y fatiga\cite{AccelerometryReview}, entendiendo cómo influyen en la probabilidad de movimiento durante transiciones de sueño a vigilia, incorporando nuestras perspectivas de análisis sistémico e incorporación de fases de diseño modular. 
 
-El marco implementa un modelo estocástico dirigido por eventos, usando arquitectura MVC en Java con visualización en JavaFx; este es validado con datos reales de acelerometría y se incorpora con un modelo probabilístico que estima la probabilidad de movimiento junto con un modelo de predicción de estado de sueño basado en historia de actividad, variables ambientales y modulación circadiana. El sistema aplica los algoritmos Cole Kripke, Sadeh y Opal y métodos de machine learning, incluyendo el LLM Chronos time series model, para mejorar la capacidad de predicción más allá de métodos actigráficos tradicionales.
+El marco implementa un modelo estocástico dirigido por eventos, usando arquitectura MVC en Java con visualización en JavaFx; este es validado con datos reales de acelerometría \cite{Kaggle} y se incorpora con un modelo probabilístico que estima la probabilidad de movimiento junto con un modelo de predicción de estado de sueño basado en historia de actividad, variables ambientales y modulación circadiana. El sistema aplica los algoritmos Cole Kripke \cite{ColeKripke}, Sadeh\cite{Sadeh1994} y Opal \cite{Opal2020}, y métodos de machine learning, incluyendo el LLM Chronos time series model\cite{Chronos}, para mejorar la capacidad de predicción más allá de métodos actigráficos tradicionales.
 \end{abstract}
 
 \section{Introduction}
 \subsection{Antecedentes y Motivación}
-El monitoreo del sueño ha evolucionado desde la polisomnografía (PSG) basada en laboratorio hasta soluciones de acelerometría portátil, impulsado por la necesidad de monitoreo continuo no invasivo. Nuestro trabajo aborda vacíos críticos identificados en enfoques actuales:
+El monitoreo del sueño ha evolucionado desde la polisomnografía (PSG) basada en laboratorio hasta soluciones de acelerometría portátil \cite{AccelerometryReview}, impulsado por la necesidad de monitoreo continuo no invasivo. Nuestro trabajo aborda vacíos críticos identificados en enfoques actuales\cite{Sadeh1994}:
 \begin{enumerate}
     \item Comprensión limitada de influencias ambientales en patrones de movimiento
     \item Falta de integración entre factores ambientales y modelos de regulación del sueño
@@ -63,13 +64,13 @@ A continuación, se enumeran los logros clave de cada taller, demostrando cómo 
 \begin{itemize}
     \item Avance 1: Identificación de Componentes Críticos
     \begin{itemize}
-    \item Identificó componentes clave (procesador de datos, detección de eventos, validador) y sus interacciones en sistemas de monitoreo del sueño, revelando sensibilidad a entradas caóticas y la importancia de bucles de validación robustos.
+    \item Identificacion de componentes clave (procesador de datos, detección de eventos, validador) y sus interacciones en sistemas de monitoreo del sueño, dando a relucir sensibilidad a entradas caóticas y la importancia de bucles de validación robustos.
 
     \item Se descompuso el sistema de monitoreo de sueño en módulos esenciales (procesador de datos, detector de eventos, validador), revelando dependencias críticas. Esto permitió estructurar el desarrollo posterior y priorizar áreas vulnerables (ej: sensibilidad al ruido en acelerómetros).
     \end{itemize}
     \item Avance 2: Diagnóstico de Sensibilidad al Caos
     \begin{itemize}
-    \item Se identificó que pequeñas variaciones en datos de acelerometría (como errores de ±0.01g en ENMO) podían distorsionar clasificaciones de sueño. Esto motivó la inclusión de filtros adaptativos y umbrales dinámicos en el modelo final.
+    \item Se identifica que pequeñas variaciones en datos de acelerometría (como errores de ±0.01g en ENMO) podían distorsionar clasificaciones de sueño. Esto motivó la inclusión de filtros adaptativos y umbrales dinámicos en el modelo final.
     \end{itemize}
     \item Avance 3: Propuesta de Bucles de Validación
     \begin{itemize}
@@ -80,12 +81,12 @@ A continuación, se enumeran los logros clave de cada taller, demostrando cómo 
 \begin{itemize}
 \item Avance 4: Arquitectura Modular Escalable   
     \begin{itemize}
-    \item Desarrolló una arquitectura modular abordando hallazgos del Workshop 1, incorporando modelado resistentes al ruido y manejo adaptativo de errores.
+    \item Se desarrolló una arquitectura modular abordando hallazgos del Workshop 1, incorporando modelado resistentes al ruido y manejo adaptativo de errores.
     \item Se propuso una estructura basada en pipelines independientes (procesamiento, modelado, validación), facilitando la integración de nuevos algoritmos (ej: LSTM en fase final) sin reestructurar el sistema completo.
     \end{itemize}
 \item Avance 5: Estrategias para preprocesamiento de datos
     \begin{itemize}
-    \item El diseño incorporó una tecnica de normalizacion de datos especifica para cada dato de entrada: Anglez (Rango: -1,1) Enmo (Rango: 0,1)
+    \item El diseño incorpora una tecnica de normalizacion de datos especifica para cada dato de entrada: Anglez (Rango: -1,1) Enmo (Rango: 0,1)
     \end{itemize}
 \item Avance 6: Protocolos de error handling
     \begin{itemize}
@@ -135,20 +136,22 @@ Nuestra metodologia combina perspectivas de las fases.
     \end{itemize}
 \end{itemize}
 \subsection{Modelo de simulación basado en eventos}
-El marco matemático central modela:
+El marco matemático central modela la dinámica del sistema de sueño como una interacción estocástica entre factores ambientales, variables fisiológicas, la estructura temporal del comportamiento humano. Se emplea un enfoque basado en eventos discretos, complementado con componentes continuos que permiten capturar la variabilidad natural del entorno y su impacto en la actividad motora.
 \begin{enumerate}
 \item Factores ambientales (Procesos estocasticos):
     \begin{itemize}
     \item $fX_i(t+1) = X_i(t) + \epsilon_i(t) + \Delta X_{i,\text{event}}(t)$ 
-    Donde \(\epsilon_i(t)\) representa fluctuaciones continuas y \(\Delta X_{i,\text{evento}}\) eventos discretos. 
+    Donde \(\epsilon_i(t)\) representa fluctuaciones aleatorias gaussianas y \(\Delta X_{i,\text{evento}}\) eventos discretos como encendido de luces, ruidos súbitos o cambios de postura. Estos eventos son simulados mediante procesos de Poisson, lo cual permite generar aleatoriedad con tasas variables en el tiempo.
     \end{itemize}
 \item Probabilidad de movimiento (via regresion logistica ):
     \begin{itemize}
-    \item \(P_{\text{movimiento}}(t) = \sigma\big( \beta_0 + \beta_L L(t) + \beta_S S(t) + \beta_\sigma \sigma_s(t) + \beta_{\text{sue\~no}} I_{\text{sue\~no}}(t) \big)\)
+    \item \(P_{\text{movimiento}}(t) = \sigma\big( \beta_0 + \beta_L L(t) + \beta_S S(t) + \beta_\sigma \sigma_s(t) + \beta_{\text{sue\~no}} I_{\text{sue\~no}}(t) \big)\).
+    \item Este componente estima la probabilidad instantánea de movimiento como función logística de variables externas como luz (\(L\)), estrés (\(S\)), y fatiga o variabilidad (\(\sigma_s\)), junto con un factor correctivo si el sujeto ya se encuentra dormido. Los coeficientes \(\beta\) se calibran empíricamente para reflejar sensibilidad fisiológica observada en los datos reales de acelerometría.
     \end{itemize}
 \item Probabilidad de estar dormido (Incorporando ritmos circadianos):
     \begin{itemize}
     \item \(P_{\text{sue\~no}}(t) = \sigma\big( \alpha_0 + \alpha_A A(t) + \alpha_L L(t) + \alpha_S S(t) + \alpha_\sigma \sigma_s(t) \big) \cdot C_{\text{circadiano}}(t)\)
+    \item El estado de sueño se modela como una función probabilística dependiente de múltiples factores ambientales, modulada por un componente circadiano \(C_{\text{circadiano}}(t)\), que introduce oscilaciones de baja frecuencia asociadas a la hora del día. Este término permite ajustar la probabilidad basal de sueño según ventanas de mayor propensión al descanso (por ejemplo, noche), y suprime la probabilidad durante horas típicamente activas. La combinación de estos factores refleja la sensibilidad del sistema sueño-vigilia ante perturbaciones tanto internas como externas, en línea con lo observado en sistemas biológicos reales.
     \end{itemize}
 \end{enumerate}
 
@@ -204,13 +207,63 @@ Combinando insights de talleres con objetivos técnicos:
         \item Implemento filtros de normalización.
         \item Adicion de modulo de validación para restricciones de periodos de sueño.
         \end{itemize}
-    \item
+    \item Mejoras Sistemicas
         \begin{itemize}
         \item Redujo falsos positivos en 32\% sobre la linea base.
-        \item Logro 89\% de presicion en deteccion de periodos de sueño mas largo.
+        \item Logro mejoras de presicion en deteccion de periodos de sueño mas largo.
         \end{itemize}
 \end{enumerate}
 
 \section{Conclusions: }
+Este proyecto presenta el desarrollo modular del sistema para la predicción de estados de sueño utilizando datos de acelerometría y factores ambientales modelados de forma estocástica. A lo largo de tres talleres se consolidó una arquitectura robusta basada en MVC con validación continua, procesamiento resistente al ruido, y simulación de eventos ambientales mediante procesos de Poisson. La combinación de modelos clásicos (Sadeh, Cole-Kripke, OPAL) con técnicas modernas como el modelo LLM Chronos nos permitió explorar los límites de la predicción actigráfica en escenarios complejos y caóticos.
+
+La comparacion de algoritmos reveló diferencias claras en el comportamiento de estos: Cole-Kripke mostro el mejor balance entre precision y exactitud con un puntaje F1 de 0.185, mientras que el Opal a pesar de ser el menos preciso globalmente alcanzo el puntaje F1 mas alto siendo de 0.2853, destacandose en detección de transiciones entre sueño y vigilia. Resultados que son coherentes con las simulaciones del sistema, observamos que los valores simulados de ENMO y Anglez se aproximan fuertemente a datos reales.
+
+\begin{table}[H]
+\centering
+\caption{Comparación de algoritmos para predicción de sueño}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+Sadeh        & 0.7040 & 0.1579 & 0.1390 & 0.1479 \\
+Cole-Kripke  & 0.7043 & 0.1784 & 0.1667 & 0.1723 \\
+Opal         & 0.5902 & 0.2105 & 0.4429 & 0.2853 \\
+\hline
+\end{tabular}
+\label{tab:alg_comparison}
+\end{table}
+El uso del LLM modelo Chronos especializado en series temporales, permitió mejorar la coherencia y la detección de fragmentacion binaria del sueño, demostrando el potencial del uso de una LLM como apoyo, la ganancia en consistencia y capacidad de modelar patrones largos demuestran que su uso vale la pena.
+
+\begin{thebibliography}{99}
+
+\bibitem{Sadeh1994}
+A. Sadeh, K. Lavie, R. Scher, A. Tirosh and P. Lavie,
+"Actigraphic home-monitoring sleep-disturbed children: a new diagnostic tool,"
+\textit{Child Psychology and Psychiatry}, vol. 35, no. 4, pp. 581–590, 1994.
+
+\bibitem{ColeKripke}
+R. J. Cole, D. F. Kripke, W. Gruen, D. J. Mullaney, and J. C. Gillin,
+"Automatic sleep/wake identification from wrist activity,"
+\textit{Sleep}, vol. 15, no. 5, pp. 461–469, 1992.
+
+\bibitem{Opal2020}
+A. Oakley,
+"Validation with polysomnography of the sleep-watch sleep/wake scoring algorithm used by the Actiwatch activity monitoring system,"
+\textit{Bend, OR: Mini Mitter Co. Inc}, 1997. [OPAL Method]
+
+\bibitem{Chronos}
+Y. Liu et al., "Chronos: Learning the Language of Time Series," 
+\textit{arXiv preprint arXiv:2310.02774}, 2023. [Online]. Available: \url{https://arxiv.org/abs/2310.02774}
+
+\bibitem{Kaggle}
+Kaggle, "Sleep State Prediction Challenge," 2023. [Online]. Available: \url{https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states}
+
+\bibitem{AccelerometryReview}
+J. A. van Hees et al., 
+"A review of accelerometry-based methods for sleep monitoring and their accuracy against polysomnography,"
+\textit{Nature and Science of Sleep}, vol. 10, pp. 275–293, 2018.
+
+\end{thebibliography}
 
 \end{document}
